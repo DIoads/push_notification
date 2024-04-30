@@ -8,10 +8,10 @@ void main() {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
-        create: (context) => NotificationsBloc(),
+        create: (_) => NotificationsBloc(),
       ),
     ],
-    child: Container(),
+    child: const MainApp(),
   ));
 }
 
