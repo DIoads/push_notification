@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:push_notification/firebase_options.dart';
 
 part 'notifications_event.dart';
 part 'notifications_state.dart';
@@ -9,9 +10,9 @@ part 'notifications_state.dart';
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationsBloc() : super(const NotificationsState()) {
-    on<NotificationsEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    // on<NotificationsEvent>((event, emit) {
+    //   // TODO: implement event handler
+    // });
   }
   static Future<void> initializeFON() async {
     await Firebase.initializeApp(

@@ -5,6 +5,8 @@ import 'package:push_notification/config/theme/app_theme.dart';
 import 'package:push_notification/presentation/notifications/notifications_bloc.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationsBloc.initializeFON();
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
