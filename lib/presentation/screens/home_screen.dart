@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:push_notification/presentation/notifications/notifications_bloc.dart';
+import 'package:push_notification/presentation/providers/notifications/notifications_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
