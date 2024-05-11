@@ -1,25 +1,14 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:push_notification/config/router/app_router.dart';
 import 'package:push_notification/config/theme/app_theme.dart';
-import 'package:push_notification/firebase_options.dart';
-import 'package:push_notification/presentation/notifications/notifications_bloc.dart';
+import 'package:push_notification/presentation/providers/notifications/notifications_bloc.dart';
+import 'package:push_notification/presentation/providers/head_provider.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await NotificationsBloc.initializeFCM();
 
-  runApp(MultiBlocProvider(
-    providers: [
-      BlocProvider(
-        create: (_) => NotificationsBloc(),
-      ),
-    ],
-    child: const MainApp(),
-  ));
+  runApp(HeadProvider.initProvider(const MainApp()));
 }
 
 class MainApp extends StatelessWidget {
