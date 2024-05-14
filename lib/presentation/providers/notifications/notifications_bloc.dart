@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:push_notification/domain/entities/push_message.dart';
 import 'package:push_notification/firebase_options.dart';
 
 part 'notifications_event.dart';
@@ -40,13 +43,27 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   }
 
   void _remoteMessageHandler(RemoteMessage message) {
-    print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
-
-    if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification}');
-    }
+    if (message.notification == null) return;
+    final notification = mapperRemoteMessageToEntity(message);
+    print(notification.toString());
   }
+
+  PushMessage mapperRemoteMessageToEntity(RemoteMessage message) {
+    return PushMessage(
+        messageId: _getMessageId(message),
+        title: message.notification!.title ?? '',
+        body: message.notification!.body ?? '',
+        sentDate: message.sentTime ?? DateTime.now(),
+        data: message.data,
+        imageUrl: _getImageUrl(message.notification!));
+  }
+
+  String _getMessageId(RemoteMessage message) =>
+      message.messageId?.replaceAll(':', '').replaceAll('%', '') ?? '';
+
+  String? _getImageUrl(RemoteNotification notification) => Platform.isAndroid
+      ? notification.android?.imageUrl
+      : notification.apple?.imageUrl;
 
   void _onForeGroundMessage() {
     FirebaseMessaging.onMessage.listen(_remoteMessageHandler);
