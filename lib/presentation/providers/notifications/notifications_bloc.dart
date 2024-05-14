@@ -25,6 +25,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
   NotificationsBloc() : super(const NotificationsState()) {
     on<NotificationsStatusChanged>(_notificationsStatusChanged);
+    on<NotificationRecived>(_notificationsStatusRecived);
     //verificar estado de notificaciones
     _checkPermitionsFCM();
     //listener para notifications foreground
@@ -42,10 +43,17 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     _getFCMToken();
   }
 
+  void _notificationsStatusRecived(
+      NotificationRecived event, Emitter<NotificationsState> emit) {
+    emit(
+        state.copyWith(notifications: [event.message, ...state.notifications]));
+  }
+
   void _remoteMessageHandler(RemoteMessage message) {
     if (message.notification == null) return;
     final notification = mapperRemoteMessageToEntity(message);
     print(notification.toString());
+    add(NotificationRecived(notification));
   }
 
   PushMessage mapperRemoteMessageToEntity(RemoteMessage message) {
